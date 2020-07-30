@@ -1,4 +1,12 @@
 from django.db import models
+from django.db.models import Q
+
+class CourseManager(models.Manager):
+
+	def search(self, query):
+		return self.get_queryset().filter(
+			Q(name__icontains=query) | Q(description__icontains=query)
+		)
 
 # Create your models here.
 class Course(models.Model):
@@ -10,7 +18,8 @@ class Course(models.Model):
 		'Data de Início', null=True, blank=True
 	)
 	image = models.ImageField(
-		upload_to='courses/images', verbose_name='Imagem'
+		upload_to='courses/images', verbose_name='Imagem',
+		null=True, blank=True
 	)
 
 	created_at = models.DateTimeField(
@@ -19,3 +28,13 @@ class Course(models.Model):
 	updated_at = models.DateTimeField(
 		'Atualizado em', auto_now=True
 	)
+
+	objects = CourseManager()
+
+	def __str__(self):
+		return self.name
+
+	class Meta:
+		verbose_name = 'Curso'
+		verbose_name_plural = 'Cursos'
+		ordering = ['name']
