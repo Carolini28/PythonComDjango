@@ -19,10 +19,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 from simplemooc.core import urls as core_url
 from simplemooc.courses import urls as courses_url
+from simplemooc.accounts import urls as accounts_url
 
 
 urlpatterns = [
 	path('', include(core_url, namespace='core')),
+    path('conta/', include(accounts_url, namespace='accounts')),
 	path('cursos/', include(courses_url, namespace='courses')),
     path('admin/', admin.site.urls),
 ]
